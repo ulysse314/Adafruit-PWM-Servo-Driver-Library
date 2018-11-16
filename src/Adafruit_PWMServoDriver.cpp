@@ -55,11 +55,13 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(TwoWire *i2c, uint8_t addr) {
     @brief  Setups the I2C interface and hardware
 */
 /**************************************************************************/
-void Adafruit_PWMServoDriver::begin(void) {
+bool Adafruit_PWMServoDriver::begin(void) {
   _i2c->begin();
-  reset();
+  if (!reset()) {
+    return false;
+  }
   // set a default frequency
-  setPWMFreq(1000);
+  return setPWMFreq(1000);
 }
 
 
@@ -139,7 +141,7 @@ bool Adafruit_PWMServoDriver::setPWMFreq(float freq) {
     @param  off At what point in the 4096-part cycle to turn the PWM output OFF
 */
 /**************************************************************************/
-uint8_t Adafruit_PWMServoDriver::setPWM(uint8_t num, uint16_t on, uint16_t off) {
+bool Adafruit_PWMServoDriver::setPWM(uint8_t num, uint16_t on, uint16_t off) {
 #ifdef ENABLE_DEBUG_OUTPUT
   Serial.print("Setting PWM "); Serial.print(num); Serial.print(": "); Serial.print(on); Serial.print("->"); Serial.println(off);
 #endif
@@ -150,7 +152,7 @@ uint8_t Adafruit_PWMServoDriver::setPWM(uint8_t num, uint16_t on, uint16_t off) 
   _i2c->write(on>>8);
   _i2c->write(off);
   _i2c->write(off>>8);
-  return _i2c->endTransmission();
+  return _i2c->endTransmission() == 0;
 }
 
 /**************************************************************************/
@@ -209,6 +211,7 @@ bool Adafruit_PWMServoDriver::read8(uint8_t addr, uint8_t *returnedValue) {
   if (returnedValue) {
     *returnedValue = readValue;
   }
+  return true;
 }
 
 bool Adafruit_PWMServoDriver::write8(uint8_t addr, uint8_t d) {
