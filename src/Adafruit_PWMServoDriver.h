@@ -51,8 +51,8 @@ class Adafruit_PWMServoDriver {
  public:
   Adafruit_PWMServoDriver(uint8_t addr = 0x40);
   Adafruit_PWMServoDriver(TwoWire *I2C, uint8_t addr = 0x40);
-  bool begin(void);
-  bool reset(void);
+  bool begin();
+  bool reset();
   bool setPWMFreq(float freq);
   bool setPWM(uint8_t num, uint16_t on, uint16_t off);
   bool setPin(uint8_t num, uint16_t val, bool invert=false);

@@ -55,7 +55,7 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(TwoWire *i2c, uint8_t addr) {
     @brief  Setups the I2C interface and hardware
 */
 /**************************************************************************/
-bool Adafruit_PWMServoDriver::begin(void) {
+bool Adafruit_PWMServoDriver::begin() {
   _i2c->begin();
   if (!reset()) {
     return false;
@@ -70,7 +70,7 @@ bool Adafruit_PWMServoDriver::begin(void) {
     @brief  Sends a reset command to the PCA9685 chip over I2C
 */
 /**************************************************************************/
-bool Adafruit_PWMServoDriver::reset(void) {
+bool Adafruit_PWMServoDriver::reset() {
   if (!write8(PCA9685_MODE1, 0x80)) {
     return false;
   }
