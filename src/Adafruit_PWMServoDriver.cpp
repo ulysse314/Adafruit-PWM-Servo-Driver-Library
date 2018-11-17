@@ -56,7 +56,6 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(TwoWire *i2c, uint8_t addr) {
 */
 /**************************************************************************/
 bool Adafruit_PWMServoDriver::begin() {
-  _i2c->begin();
   if (!reset()) {
     return false;
   }
