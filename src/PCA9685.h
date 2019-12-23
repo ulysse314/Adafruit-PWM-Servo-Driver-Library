@@ -15,8 +15,8 @@
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 
-#ifndef _ADAFRUIT_PWMServoDriver_H
-#define _ADAFRUIT_PWMServoDriver_H
+#ifndef PCA9685_h
+#define PCA9685_h
 
 #if ARDUINO >= 100
  #include "Arduino.h"
@@ -47,10 +47,10 @@
     @brief  Class that stores state and functions for interacting with PCA9685 PWM chip
 */
 /**************************************************************************/
-class Adafruit_PWMServoDriver {
+class PCA9685 {
  public:
-  Adafruit_PWMServoDriver(uint8_t addr = 0x40);
-  Adafruit_PWMServoDriver(TwoWire *I2C, uint8_t addr = 0x40);
+  PCA9685(uint8_t addr = 0x40);
+  PCA9685(TwoWire *I2C, uint8_t addr = 0x40);
   bool begin();
   bool reset();
   bool setPWMFreq(float freq);
@@ -66,4 +66,4 @@ class Adafruit_PWMServoDriver {
   bool write8(uint8_t addr, uint8_t d);
 };
 
-#endif
+#endif  // PCA9685_h
