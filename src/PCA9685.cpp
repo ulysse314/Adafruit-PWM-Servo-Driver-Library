@@ -198,7 +198,7 @@ bool PCA9685::setPin(uint8_t num, uint16_t val, bool invert)
 bool PCA9685::read8(uint8_t addr, uint8_t *returnedValue) {
   _i2c->beginTransmission(_i2caddr);
   _i2c->write(addr);
-  if (_i2c->endTransmission() != 0) {
+  if (_i2c->endTransmission(false) != 0) {
     return false;
   }
 
