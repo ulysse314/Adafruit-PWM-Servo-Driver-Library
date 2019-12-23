@@ -15,28 +15,10 @@
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 
-#include <PCA9685.h>
-#include <Wire.h>
+#include "PCA9685.h"
 
 // Set to true to print some debug messages, or false to disable them.
 //#define ENABLE_DEBUG_OUTPUT
-
-
-/**************************************************************************/
-/*! 
-    @brief  Instantiates a new PCA9685 PWM driver chip with the I2C address on the Wire interface. On Due we use Wire1 since its the interface on the 'default' I2C pins.
-    @param  addr The 7-bit I2C address to locate this chip, default is 0x40
-*/
-/**************************************************************************/
-PCA9685::PCA9685(uint8_t addr) {
-  _i2caddr = addr;
-
-#if defined(ARDUINO_SAM_DUE)
-  _i2c = &Wire1;
-#else
-  _i2c = &Wire;
-#endif
-}
 
 /**************************************************************************/
 /*! 
@@ -45,9 +27,9 @@ PCA9685::PCA9685(uint8_t addr) {
     @param  addr The 7-bit I2C address to locate this chip, default is 0x40
 */
 /**************************************************************************/
-PCA9685::PCA9685(TwoWire *i2c, uint8_t addr) {
-  _i2c = i2c;
-  _i2caddr = addr;
+PCA9685::PCA9685(uint8_t addr, TwoWire *i2cBus) :
+    _i2caddr(addr),
+    _i2cBus(i2cBus) {
 }
 
 /**************************************************************************/
@@ -145,13 +127,13 @@ bool PCA9685::setPWM(uint8_t num, uint16_t on, uint16_t off) {
   Serial.print("Setting PWM "); Serial.print(num); Serial.print(": "); Serial.print(on); Serial.print("->"); Serial.println(off);
 #endif
 
-  _i2c->beginTransmission(_i2caddr);
-  _i2c->write(LED0_ON_L+4*num);
-  _i2c->write(on);
-  _i2c->write(on>>8);
-  _i2c->write(off);
-  _i2c->write(off>>8);
-  return _i2c->endTransmission() == 0;
+  _i2cBus->beginTransmission(_i2caddr);
+  _i2cBus->write(LED0_ON_L+4*num);
+  _i2cBus->write(on);
+  _i2cBus->write(on>>8);
+  _i2cBus->write(off);
+  _i2cBus->write(off>>8);
+  return _i2cBus->endTransmission() == 0;
 }
 
 /**************************************************************************/
@@ -196,17 +178,17 @@ bool PCA9685::setPin(uint8_t num, uint16_t val, bool invert)
 /*******************************************************************************************/
 
 bool PCA9685::read8(uint8_t addr, uint8_t *returnedValue) {
-  _i2c->beginTransmission(_i2caddr);
-  _i2c->write(addr);
-  if (_i2c->endTransmission(false) != 0) {
+  _i2cBus->beginTransmission(_i2caddr);
+  _i2cBus->write(addr);
+  if (_i2cBus->endTransmission(false) != 0) {
     return false;
   }
 
-  _i2c->requestFrom((uint8_t)_i2caddr, (uint8_t)1);
-  if (_i2c->available() == 0) {
+  _i2cBus->requestFrom((uint8_t)_i2caddr, (uint8_t)1);
+  if (_i2cBus->available() == 0) {
     return false;
   }
-  uint8_t readValue = _i2c->read();
+  uint8_t readValue = _i2cBus->read();
   if (returnedValue) {
     *returnedValue = readValue;
   }
@@ -214,8 +196,8 @@ bool PCA9685::read8(uint8_t addr, uint8_t *returnedValue) {
 }
 
 bool PCA9685::write8(uint8_t addr, uint8_t d) {
-  _i2c->beginTransmission(_i2caddr);
-  _i2c->write(addr);
-  _i2c->write(d);
-  return _i2c->endTransmission() == 0;
+  _i2cBus->beginTransmission(_i2caddr);
+  _i2cBus->write(addr);
+  _i2cBus->write(d);
+  return _i2cBus->endTransmission() == 0;
 }

@@ -18,12 +18,8 @@
 #ifndef PCA9685_h
 #define PCA9685_h
 
-#if ARDUINO >= 100
- #include "Arduino.h"
-#else
- #include "WProgram.h"
-#endif
-#include "Wire.h"
+#include <Arduino.h>
+#include <Wire.h>
 
 #define PCA9685_SUBADR1 0x2
 #define PCA9685_SUBADR2 0x3
@@ -49,8 +45,7 @@
 /**************************************************************************/
 class PCA9685 {
  public:
-  PCA9685(uint8_t addr = 0x40);
-  PCA9685(TwoWire *I2C, uint8_t addr = 0x40);
+  PCA9685(uint8_t addr = 0x40, TwoWire *i2cBus = &Wire);
   bool begin();
   bool reset();
   bool setPWMFreq(float freq);
@@ -60,7 +55,7 @@ class PCA9685 {
  private:
   uint8_t _i2caddr;
   
-  TwoWire *_i2c;
+  TwoWire *_i2cBus;
 
   bool read8(uint8_t addr, uint8_t *returnedValue);
   bool write8(uint8_t addr, uint8_t d);
