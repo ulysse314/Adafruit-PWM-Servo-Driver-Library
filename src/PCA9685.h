@@ -55,10 +55,10 @@ class PCA9685 {
  private:
   uint8_t _i2caddr;
   
-  TwoWire *_i2cBus;
+  TwoWire *const _i2cBus;
 
-  bool read8(uint8_t addr, uint8_t *returnedValue);
-  bool write8(uint8_t addr, uint8_t d);
+  bool read8(uint8_t addr, uint8_t *returnedValue) const;
+  bool write8(uint8_t addr, uint8_t d) const;
 };
 
 #endif  // PCA9685_h

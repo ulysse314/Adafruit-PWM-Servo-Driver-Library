@@ -177,7 +177,7 @@ bool PCA9685::setPin(uint8_t num, uint16_t val, bool invert)
 
 /*******************************************************************************************/
 
-bool PCA9685::read8(uint8_t addr, uint8_t *returnedValue) {
+bool PCA9685::read8(uint8_t addr, uint8_t *returnedValue) const {
   _i2cBus->beginTransmission(_i2caddr);
   _i2cBus->write(addr);
   if (_i2cBus->endTransmission(false) != 0) {
@@ -195,7 +195,7 @@ bool PCA9685::read8(uint8_t addr, uint8_t *returnedValue) {
   return true;
 }
 
-bool PCA9685::write8(uint8_t addr, uint8_t d) {
+bool PCA9685::write8(uint8_t addr, uint8_t d) const {
   _i2cBus->beginTransmission(_i2caddr);
   _i2cBus->write(addr);
   _i2cBus->write(d);
