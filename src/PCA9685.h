@@ -53,12 +53,11 @@ class PCA9685 {
   bool setPin(uint8_t num, uint16_t val, bool invert=false);
 
  private:
-  uint8_t _i2caddr;
-  
-  TwoWire *const _i2cBus;
-
   bool read8(uint8_t addr, uint8_t *returnedValue) const;
   bool write8(uint8_t addr, uint8_t d) const;
+
+  const uint8_t _i2caddr;
+  TwoWire *const _i2cBus;
 };
 
 #endif  // PCA9685_h
