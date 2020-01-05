@@ -21,14 +21,14 @@
   ***************************************************/
 
 #include <Wire.h>
-#include <Adafruit_PWMServoDriver.h>
+#include <PCA9685.h>
 
 // called this way, it uses the default address 0x40
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
+PCA9685 pwm = PCA9685(0x40, &Wire);
 // you can also call it with a different address you want
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
+//PCA9685 pwm = PCA9685(0x40);
 // you can also call it with a different address and I2C interface
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
+//PCA9685 pwm = PCA9685(0x40, &Wire);
 
 #if (defined(ESP8266) || defined(ESP32))
 
@@ -63,6 +63,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("PCA9685 Oscillator test");
 
+	Wire.begin();
   // set PCA9685
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);             // Set some frequency

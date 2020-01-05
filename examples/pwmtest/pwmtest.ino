@@ -17,19 +17,20 @@
  ****************************************************/
 
 #include <Wire.h>
-#include <Adafruit_PWMServoDriver.h>
+#include <PCA9685.h>
 
 // called this way, it uses the default address 0x40
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+PCA9685 pwm = PCA9685();
 // you can also call it with a different address you want
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x41);
+//PCA9685 pwm = PCA9685(0x41);
 // you can also call it with a different address and I2C interface
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
+//PCA9685 pwm = PCA9685(0x40, &Wire);
 
 void setup() {
   Serial.begin(9600);
   Serial.println("16 channel PWM test!");
 
+  Wire.begin();
   pwm.begin();
   // In theory the internal oscillator is 25MHz but it really isn't
   // that precise. You can 'calibrate' by tweaking this number till
