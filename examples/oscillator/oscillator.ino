@@ -68,7 +68,7 @@ void setup() {
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);             // Set some frequency
   pwm.setPWM(PIN_SERVO_FEEDBACK,0,2048); // half of time high, half of time low
-  prescale = pwm.readPrescale();         // read prescale
+  pwm.readPrescale(&prescale);           // read prescale
   Serial.printf("Target frequency: %u\n", FREQUENCY);
   Serial.printf("Applied prescale: %u\n", prescale);
 
